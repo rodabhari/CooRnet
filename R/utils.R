@@ -34,7 +34,7 @@ clean_urls <- function(df, url){
   return(df)
 }
 
-build_coord_graph <- function(ct_shares.df, coordinated_shares, percentile_edge_weight=0.90, timestamps=FALSE) {
+build_coord_graph <- function(ct_shares.df, coordinated_shares, percentile_cooR_score=0.90, timestamps=FALSE) {
 
   ###########################################
   # Get coordinated entities and network ####
@@ -83,9 +83,13 @@ build_coord_graph <- function(ct_shares.df, coordinated_shares, percentile_edge_
 
   # keep only highly coordinated entities
   V(full_g)$degree <- degree(full_g)
-  q <- quantile(E(full_g)$weight, percentile_edge_weight) # set the percentile_edge_weight number of repetedly coordinated link sharing to keep
-  highly_connected_g <- induced_subgraph(graph = full_g, vids = V(full_g)[V(full_g)$degree > 0 ]) # filter for degree
-  highly_connected_g <- subgraph.edges(highly_connected_g, eids = which(E(highly_connected_g)$weight >= q),delete.vertices = T) # filter for edge weight
+  full_g <- induced_subgraph(graph = full_g, vids = V(full_g)[V(full_g)$degree > 0 ])
+  V(full_g)$strength <- strength(full_g) # sum up the edge weights of the adjacent edges for each vertex
+  V(full_g)$cooR_score <- V(full_g)$strength/V(full_g)$degree
+
+  q <- quantile(V(full_g)$cooR_score, percentile_cooR_score) # set the percentile_cooR_score minimum value to keep
+
+  highly_connected_g <- subgraph(full_g, v = which(V(full_g)$cooR_score >= q)) # filter for cooR_score
 
   if (timestamps==TRUE) {
     cat("\n\nAdding timestamps. Please be patient... :)")
@@ -123,7 +127,6 @@ build_coord_graph <- function(ct_shares.df, coordinated_shares, percentile_edge_
   V(highly_connected_g)$component <- components(highly_connected_g)$membership
   V(highly_connected_g)$degree <- degree(highly_connected_g) # re-calculate the degree on the subgraph
   V(highly_connected_g)$strength <- strength(highly_connected_g) # sum up the edge weights of the adjacent edges for each vertex
-
 
   highly_connected_coordinated_entities <- igraph::as_data_frame(highly_connected_g, "vertices")
   rownames(highly_connected_coordinated_entities) <- 1:nrow(highly_connected_coordinated_entities)

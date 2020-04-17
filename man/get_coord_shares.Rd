@@ -8,7 +8,7 @@ get_coord_shares(
   ct_shares.df,
   coordination_interval = NULL,
   parallel = FALSE,
-  percentile_edge_weight = 0.9,
+  percentile_cooR_score = 0.9,
   clean_urls = FALSE,
   keep_ourl_only = FALSE,
   gtimestamps = FALSE
@@ -21,7 +21,7 @@ get_coord_shares(
 
 \item{parallel}{enables parallel processing to speed up the process taking advantage of multiple cores (default FALSE). The number of cores is automatically set to all the available cores minus one}
 
-\item{percentile_edge_weight}{defines the percentile of the edge distribution to keep in order to identify a network of coordinated entities. In other terms, this value determines the minimum number of times that two entities had to coordinate in order to be considered part of a network. (default 0.90)}
+\item{percentile_cooR_score}{defines the percentile of the cooR_score (vertex strenght/degree) distribution to keep in order to identify a network of coordinated entities. (default 0.90)}
 
 \item{clean_urls}{clean the URLs from the tracking parameters (default FALSE)}
 
@@ -38,7 +38,7 @@ Given a dataset of CrowdTangle shares and a time threshold, this function detect
 \examples{
 output <- get_coord_shares(ct_shares.df)
 
-output <- get_coord_shares(ct_shares.df = ct_shares.df, coordination_interval = coordination.interval, percentile_edge_weight=0.9, clean_urls=FALSE, keep_ourl_only=FALSE, gtimestamps=FALSE)
+output <- get_coord_shares(ct_shares.df = ct_shares.df, coordination_interval = coordination.interval, percentile_cooR_score=0.9, clean_urls=FALSE, keep_ourl_only=FALSE, gtimestamps=FALSE)
 
 # Extract the outputs
 get_outputs(output)
