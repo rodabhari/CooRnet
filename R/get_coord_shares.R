@@ -232,7 +232,7 @@ get_coord_shares <- function(ct_shares.df, coordination_interval=NULL, parallel=
     # write the log
     write(paste("\nnumber of unique URLs shared in coordinated way:", table(uniqueURLs_shared$iscoordinated)[2][[1]], paste0("(", round((table(uniqueURLs_shared$iscoordinated)[2][[1]]/nrow(uniqueURLs_shared)),4)*100, "%)"),
                 "\nnumber of unique URLs shared in non-coordinated way:", table(uniqueURLs_shared$iscoordinated)[1][[1]], paste0("(", round((table(uniqueURLs_shared$iscoordinated)[1][[1]]/nrow(uniqueURLs_shared)),4)*100, "%)"),
-                "\npercentile_edge_weight:", percentile_edge_weight, paste0("(minimum coordination repetition: ", q, ")"),
+                "\npercentile_cooR_score:", percentile_cooR_score, paste0("(minimum cooR_score: ", q, ")"),
                 "\nhighly connected coordinated entities:", length(unique(highly_connected_coordinated_entities$name)),
                 "\nnumber of component:", length(unique(highly_connected_coordinated_entities$component))),
           file="log.txt", append=TRUE)
