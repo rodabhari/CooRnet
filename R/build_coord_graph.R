@@ -1,5 +1,5 @@
 #' @importFrom dplyr group_by mutate %>% summarize
-#' @importFrom igraph graph.data.frame simplify bipartite.projection induced_subgraph subgraph.edges degree V V<- E E<- components strength as_edgelist get.edge.ids neighbors
+#' @importFrom igraph graph.data.frame simplify bipartite.projection induced_subgraph subgraph.edges degree V V<- E E<- components strength as_edgelist get.edge.ids neighbors cluster_louvain
 
 build_coord_graph <- function(ct_shares.df, coordinated_shares, percentile_edge_weight=0.90, timestamps=FALSE) {
 
@@ -89,6 +89,7 @@ build_coord_graph <- function(ct_shares.df, coordinated_shares, percentile_edge_
 
   # find and annotate nodes-components
   V(highly_connected_g)$component <- igraph::components(highly_connected_g)$membership
+  V(highly_connected_g)$cluster <- igraph::cluster_louvain(highly_connected_g)$membership # add cluster to simplyfy the analysis of large components
   V(highly_connected_g)$degree <- igraph::degree(highly_connected_g) # re-calculate the degree on the subgraph
   V(highly_connected_g)$strength <- igraph::strength(highly_connected_g) # sum up the edge weights of the adjacent edges for each vertex
 

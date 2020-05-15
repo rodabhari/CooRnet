@@ -4,10 +4,12 @@
 \alias{get_component_summary}
 \title{get_component_summary}
 \usage{
-get_component_summary(output)
+get_component_summary(output, summary_type = "component")
 }
 \arguments{
 \item{output}{the output list resulting from the function get_coord_shares}
+
+\item{summary_type}{either "component" or "cluster" (default = "component")}
 }
 \value{
 A data frame containing summary data by each coordinated component:
