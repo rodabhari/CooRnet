@@ -93,7 +93,7 @@ get_ctshares <- function(urls, url_column, date_column, platforms="facebook,inst
 
     # set date limits: one week after date_published
     startDate <- as.POSIXct(urls$date[i], origin="1970-01-01", tz = "UTC")
-    endDate <- startDate+604800
+    endDate <- as.POSIXct("2022-01-01", origin="1970-01-01", tz = "UTC")
 
     link <- urls$url[i]
 
@@ -213,9 +213,9 @@ get_ctshares <- function(urls, url_column, date_column, platforms="facebook,inst
   ct_shares.df <- ct_shares.df[!duplicated(ct_shares.df[,c("id", "platformId", "postUrl", "expanded")]),]
 
   # remove shares performed more than one week from first share
-  ct_shares.df <- ct_shares.df %>%
-    dplyr::group_by(expanded) %>%
-    dplyr::filter(difftime(max(date), min(date), units = "secs") <= 604800)
+  #ct_shares.df <- ct_shares.df %>%
+    #dplyr::group_by(expanded) %>%
+    #dplyr::filter(difftime(max(date), min(date), units = "secs") <= 604800)
 
   # clean the expanded URLs
   if(clean_urls==TRUE){
